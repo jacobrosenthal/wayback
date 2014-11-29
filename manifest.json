@@ -1,6 +1,6 @@
 {
   "name": "wayback",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "manifest_version": 2,
   "offline_enabled": true,
   "description": "wetware backups",
@@ -13,7 +13,6 @@
     "https://accounts.google.com/*",
     "https://www.googleapis.com/*",
     "storage",
-    "videoCapture",
     "identity"
   ],
     "oauth2": {
