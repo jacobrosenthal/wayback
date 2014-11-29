@@ -1,0 +1,107 @@
+html {
+    background: #111111;
+    height: 100%;
+    background: linear-gradient( #333, #000);
+    overflow: auto;
+}
+canvas {
+    display: none;
+}
+video, img, #startbutton {
+    display: block;
+    float: left;
+    border: 10px solid #fff;
+    border-radius: 10px;
+}
+#startbutton {
+    background: green;
+    border: none;
+    color: #fff;
+    margin: 100px 20px 20px 20px;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+#container {
+    overflow: hidden;
+    width: 880px;
+    margin: 20px auto;
+}
+
+
+#fotorama div:nth-child(1) {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+
+
+
+.gridster * {
+  margin:0;
+  padding:0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+
+/*/
+/* demo
+/*/
+
+
+body {
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #444;
+    margin: 30px 40px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+/*/
+/* gridster
+/*/
+
+.gridster ul {
+    background-color: #EFEFEF;
+}
+
+.gridster li {
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    line-height: 100%;
+}
+
+
+.gridster {
+    margin: 0 auto;
+
+    opacity: .8;
+
+    -webkit-transition: opacity .6s;
+    -moz-transition: opacity .6s;
+    -o-transition: opacity .6s;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+}
+
+.gridster .gs-w {
+    background: #DDD;
+    cursor: pointer;
+}
+
+.gridster .player {
+    background: #BBB;
+}
+
+
+.gridster .preview-holder {
+    border: none!important;
+    background: red!important;
+}

@@ -1,6 +1,6 @@
 {
   "name": "wayback",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "manifest_version": 2,
   "offline_enabled": true,
   "description": "wetware backups",
@@ -10,8 +10,20 @@
     }
   },
   "permissions": [
-
+    "https://accounts.google.com/*",
+    "https://www.googleapis.com/*",
+    "storage",
+    "videoCapture",
+    "identity"
   ],
+    "oauth2": {
+    "client_id": "842925690975-kl352cl54njq98pstalfvtovd0nj7n7v.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/plus.login",
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzXNp7pZlCwMOaxxGNgeL/9gM4gTWDoqN99Hx3v6WtPDZMWsopDuxMQg7ARi11QIj0lc4Y4p6YJhX5lmtCOZCj7lRTSSBzpUiiwbFci27UG4vvgy8XQA8nywPB9MwL2QqkAUn1+mTCfulY0k8IC+Dt6pwWqOjDtiO0GJ52dLPnNpy65w5gY/948WiRRwQ3qi46HWhOyf6cg+Q8sEAqBMXB5/NymmpYg9BI4L9ZGKYzLl9C9hq3rtFx9Et0URL/qIT13r2a1ClGEo6Ctdh63NpuFP4ac6GFDACzoVW4OoDS/EVH63uDPtDSPoJeE/zMV8vBccPv/hKLIhYMrPnfobw6QIDAQAB",
   "icons": {
     "16": "plainio16.png",
     "48": "plainio48.png",
