@@ -1,7 +1,5 @@
 
-serial debugger
+memoryio wayback
 ==============
 
-Chrome Serial Debugger App from @monteslu !!! Thank You, this is awesome!
-
-Send/Receive data from a serial port in chrome.
+timehop(tm) style time capsule for photos in your gmail
