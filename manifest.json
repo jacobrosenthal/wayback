@@ -1,6 +1,6 @@
 {
   "name": "wayback",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "manifest_version": 2,
   "offline_enabled": true,
   "description": "wetware backups",
@@ -13,12 +13,13 @@
     "https://accounts.google.com/*",
     "https://www.googleapis.com/*",
     "storage",
-    "identity"
+    "identity",
+    "identity.email"
   ],
     "oauth2": {
     "client_id": "842925690975-kl352cl54njq98pstalfvtovd0nj7n7v.apps.googleusercontent.com",
     "scopes": [
-      "https://www.googleapis.com/auth/plus.login",
+      "https://www.googleapis.com/auth/plus.me",
       "https://www.googleapis.com/auth/gmail.readonly"
     ]
   },

@@ -124,41 +124,41 @@ var googlePlusUserLoader = (function() {
 
     if (!error && status == 200) {
       //sampleSupport.log(response);
-      var user_info = JSON.parse(response);
-      sampleSupport.log(user_info.snippet);
+      var message = JSON.parse(response);
+      //sampleSupport.log(message.snippet);
       // sampleSupport.log(user_info.payload.parts);
-      user_info.payload.parts.forEach(getAttachment.bind(user_info.id));
+
+      chrome.storage.sync.get('email', function(items) {
+        message.payload.parts.forEach(getAttachment.bind(null, message, items.email));
+      });
     } else {
       changeState(STATE_START);
     }
 
   }
 
-  function getAttachment(element, index, array){
-    
+  function getAttachment(message, email, element, index, array){
+
     if(element.body['attachmentId']){
       xhrWithAuth('GET',
-                  'https://www.googleapis.com/gmail/v1/users/me/messages/' + this + '/attachments/' + element.body['attachmentId'],
+                  'https://www.googleapis.com/gmail/v1/users/me/messages/' + message.id + '/attachments/' + element.body['attachmentId'],
                   true,
-                  parseAttachment.bind(element));
+                  parseAttachment.bind(null , message, email, element));
     }
 
   }
 
-  function parseAttachment(error, status, response){
+  function parseAttachment(message, email, part, error, status, response){
 
     if (!error && status == 200) {
 
-      var user_info = JSON.parse(response);
+      var attachment = JSON.parse(response);
 
 
-      if(this.mimeType.search("image") != -1)
+      if(part.mimeType.search("image") != -1)
       {
 
         var group = document.querySelector('#fotorama');
-
-
-        sampleSupport.log(this.filename);
 
 
       // <li data-pile="Group 1">
@@ -176,20 +176,18 @@ var googlePlusUserLoader = (function() {
 
 
         //gotta be some fucking api for this, oh well 
-        var data =  user_info.data.replace(/[\_]/g, '/');
-        data =  data.replace(/[-]/g, '+');
+        var b64Image =  attachment.data.replace(/[\_]/g, '/');
+        b64Image =  b64Image.replace(/[-]/g, '+');
 
-        data = "data:"  + this.mimeType + ";base64," + data
+        b64Image = "data:"  + part.mimeType + ";base64," + b64Image
 
 
         var fotorama=$('#fotorama').data('fotorama');
 
         fotorama.push({
-          img: data, 
-          caption: this.filename,
+          img: b64Image, 
+          caption: '<a target="_blank" href="https://mail.google.com/mail/?authuser=' + encodeURIComponent(email) + '#all/' + message.id + '">' + part.filename + '</a>',
         });
-
-
 
         // var imgElem = document.createElement('img');
         // imgElem.src = "data:" + this.mimeType + ";base64," + data;
@@ -244,10 +242,17 @@ var googlePlusUserLoader = (function() {
           '. See chrome://identity-internals for details.');
         changeState(STATE_AUTHTOKEN_ACQUIRED);
 
-        var before = moment(after);
-        before.add(7, 'days');
+      //reset date in case youve moved it
+      after = moment().subtract(1, 'year');
 
-        getMessages( after.format("YYYY/MM/DD"), before.format("YYYY/MM/DD"), true );
+      chrome.identity.getProfileUserInfo(function(userInfo) {
+
+       // Save it using the Chrome extension storage API.
+        chrome.storage.sync.set({'email': userInfo.email}, function() {
+          updateMessages();
+        });
+
+      });
 
       }
     });
@@ -288,33 +293,34 @@ var googlePlusUserLoader = (function() {
 
   var after = moment().subtract(1, 'year');
 
+  function updateMessages(){
+
+    chrome.storage.sync.get('email', function(items) {
+
+      var before = moment(after);
+      before.add(7, 'days');
+
+      var navdate = document.querySelector('#nav-date');
+      navdate.innerHTML = '<a target="_blank" href="https://mail.google.com/mail/?authuser=' + encodeURIComponent(items.email) + '#search/after: ' + encodeURIComponent(after.format("YYYY/MM/DD")) + ' before: ' + encodeURIComponent(before.format("YYYY/MM/DD")) + ' has:attachment">' + after.format("YYYY/MM/DD") + '</a>';
+
+      getMessages( after.format("YYYY/MM/DD"), before.format("YYYY/MM/DD"), true );
+
+    });
+
+  }
+
   function leftWeek() {
     after.subtract(1, 'week');
-    var navdate = document.querySelector('#nav-date');
-    navdate.innerHTML = after.format("YYYY/MM/DD");
-
-    var before = moment(after);
-    before.add(7, 'days');
-
-    getMessages( after.format("YYYY/MM/DD"), before.format("YYYY/MM/DD"), true );
+    updateMessages();
   }
 
   function rightWeek() {
     after.add(1, 'week');
-    var navdate = document.querySelector('#nav-date');
-    navdate.innerHTML = after.format("YYYY/MM/DD");
-
-    var before = moment(after);
-    before.add(7, 'days');
-
-    getMessages( after.format("YYYY/MM/DD"), before.format("YYYY/MM/DD"), true);
+    updateMessages();
   }
 
   return {
     onload: function () {
-
-      var navdate = document.querySelector('#nav-date');
-      navdate.innerHTML = after.format("YYYY/MM/DD");
 
       signin_button = document.querySelector('#signin');
       signin_button.addEventListener('click', interactiveSignIn);
@@ -333,10 +339,13 @@ var googlePlusUserLoader = (function() {
       right_button = document.querySelector('#nav-right');
       right_button.addEventListener('click', rightWeek);
 
-      var before = moment(after);
-      before.add(7, 'days');
-      
-      getMessages( after.format("YYYY/MM/DD"), before.format("YYYY/MM/DD"), true );
+      chrome.identity.getProfileUserInfo(function(userInfo) {
+
+        //reset date in case youve moved it
+        after = moment().subtract(1, 'year');
+
+        updateMessages();
+      });
 
     }
   };
