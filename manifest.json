@@ -1,0 +1,21 @@
+{
+  "name": "wayback",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "offline_enabled": true,
+  "description": "wetware backups",
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+
+  ],
+  "icons": {
+    "16": "plainio16.png",
+    "48": "plainio48.png",
+    "64": "plainio64.png",
+    "128": "plainio128.png"
+  }
+}
